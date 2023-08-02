@@ -8,13 +8,21 @@ public class ArrowController : MonoBehaviour
     private float speed;
 
     private GameObject catGo;
+    private CatController catController;
+    private GameDirector gameDirector;
+
+    public int damage = 1;
+    
 
     // Start is called before the first frame update
     void Start()
     {
         this.catGo = GameObject.Find("cat");
-        Debug.Log("catGo: {0}", this.catGo);
+        this.catController = this.catGo.GetComponent<CatController>();
 
+        GameObject gameDirectorGo = GameObject.Find("GameDirector");
+        this.gameDirector = gameDirectorGo.GetComponent<GameDirector>();
+        //Debug.LogFormat("catGo: {0}", this.catGo);
     }
 
     private bool IsCollide()
@@ -26,12 +34,12 @@ public class ArrowController : MonoBehaviour
         //float distance = dir.magnitude;
         //Debug.Log(distance);
         var dis = Vector3.Distance(this.transform.position, this.catGo.transform.position);
-        Debug.LogFormat("두 원사이의 거리 : {0}", dis);
+        //Debug.LogFormat("두 원사이의 거리 : {0}", dis);
 
         //반지름의 합 
         CatController catController = this.catGo.GetComponent<CatController>();
         var sumRadius = this.radius + catController.radius;
-        Debug.LogFormat("두 원의 반지름의 합 : {0}", sumRadius);
+        //Debug.LogFormat("두 원의 반지름의 합 : {0}", sumRadius);
 
         //두 원사이의 거리가 두 원의 반지름의 합보다 크면 false (부딪히지 않았다)
 
@@ -57,25 +65,34 @@ public class ArrowController : MonoBehaviour
 
         if (this.transform.position.y <= -3.9f)
         {
+            this.gameDirector.AddScore(100);
             Destroy(this.gameObject);
         }
 
         if (this.IsCollide())
         {
-            Debug.LogFormat("충돌했다!");
+            //Debug.LogFormat("충돌했다!");
 
             //--------------------------------------------------------------------------
+
+            if (this.catController.IsDie())
+                return;
+
+            this.catController.DecreaseHp(this.damage);
+
             //충돌시 HP를 감소 한다 
             GameObject gameDirectorGo = GameObject.Find("GameDirector");
             GameDirector gameDirector =  gameDirectorGo.GetComponent<GameDirector>();
-            gameDirector.DecreaseHp();
+            gameDirector.UpdateHpGauge();
+
             //--------------------------------------------------------------------------
+
 
             Destroy(this.gameObject);   //ArrowController컴포넌트가 붙어있는 게임오브젝트를 씬에서 제거한다 
         }
         else 
         {
-            Debug.LogFormat("충돌하지 않았다!");
+            //Debug.LogFormat("충돌하지 않았다!");
         }
     }
 

@@ -6,6 +6,7 @@ public class ArrowGenerator : MonoBehaviour
 {
     public GameObject arrowPrefab;  //프리팹 원본 파일 
     private float elapsedTime; //경과 시간 
+    private bool isGameOver;
 
     private void Awake()
     {
@@ -20,6 +21,8 @@ public class ArrowGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (this.isGameOver) return;
+
         //매프레임마다 Time.deltaTime을 경과시간에 더해준다 
         this.elapsedTime += Time.deltaTime;
 
@@ -38,5 +41,10 @@ public class ArrowGenerator : MonoBehaviour
         GameObject arrowGo = Instantiate(this.arrowPrefab);
         //Random.Range(-7.5f, -7.5f)
         arrowGo.transform.position = new Vector3(Random.Range(-7, 8), 6f, 0);
+    }
+
+    public void StopGenerate()
+    {
+        this.isGameOver = true;
     }
 }
