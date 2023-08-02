@@ -63,6 +63,14 @@ public class ArrowController : MonoBehaviour
         if (this.IsCollide())
         {
             Debug.LogFormat("충돌했다!");
+
+            //--------------------------------------------------------------------------
+            //충돌시 HP를 감소 한다 
+            GameObject gameDirectorGo = GameObject.Find("GameDirector");
+            GameDirector gameDirector =  gameDirectorGo.GetComponent<GameDirector>();
+            gameDirector.DecreaseHp();
+            //--------------------------------------------------------------------------
+
             Destroy(this.gameObject);   //ArrowController컴포넌트가 붙어있는 게임오브젝트를 씬에서 제거한다 
         }
         else 

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CatController : MonoBehaviour
 {
+    public float radius = 1;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,17 +19,26 @@ public class CatController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             //왼쪽 화살표를 눌렀다면 x축으로 -3유닛만큼 이동 
-            this.transform.Translate(-3, 0, 0);
+            this.MoveLeft();
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             //오른쪽 화살표를 눌렀다면 x축으로 3유닛만큼 이동 
-            this.transform.Translate(3, 0, 0);
+            this.MoveRight();
         }
-            
+
     }
 
-    public float radius = 1;
+    public void MoveLeft()
+    {
+        this.transform.Translate(-3, 0, 0);
+    }
+
+    public void MoveRight()
+    {   
+        this.transform.Translate(3, 0, 0);
+    }
+
     //이벤트 함수 
     private void OnDrawGizmos()
     {
